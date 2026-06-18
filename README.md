@@ -7,3 +7,7 @@ Free And Open Source Prompt Library For Everyone
 Setting Up Only Required Files Like index.html , style.css and app.js
 For Icons We Are Using Lucid Icons
 and For Storage Using localStorage
+
+
+# Day 2
+Added Content In html file also did style in style css file 
