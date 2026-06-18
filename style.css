@@ -1,3 +1,4 @@
+ 
 *{
   margin:0;
   padding:0;
@@ -119,4 +120,47 @@ main{
     padding:20px;
     border-radius: 10px;
 
+=======
+.modal-header button {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+form input,
+form select,
+form textarea {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+form button {
+  border: none;
+  background: #2563eb;
+  color: white;
+  padding: 12px;
+  border: 6px;
+  cursor: pointer;
+}
+
+@media (max-width: 769px) {
+  header {
+    flex-direction: column;
+    gap: 15px;
+  }
+  .header-right {
+    width: 100%;
+    flex-direction: column;
+  }
+  .search-box {
+    width: 100%;
+  }
+ 
 }
