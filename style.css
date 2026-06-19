@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+ 
+>>>>>>> 9a3af19ca5cae1a693a6271624c43aa5f8b2494f
 *{
   margin:0;
   padding:0;
@@ -118,7 +122,12 @@ main{
     max-width: 500px;
     padding:20px;
     border-radius: 10px;
+<<<<<<< HEAD
 }
+=======
+
+=======
+>>>>>>> 9a3af19ca5cae1a693a6271624c43aa5f8b2494f
 .modal-header button {
   border: none;
   background: none;
@@ -160,5 +169,3 @@ form button {
   .search-box {
     width: 100%;
   }
-
-}
