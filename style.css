@@ -179,3 +179,15 @@ form button {
     width: 100%;
   }
 }
+
+.empty-state {
+  background: white;
+
+  padding: 40px;
+
+  text-align: center;
+
+  border: 1px dashed #ccc;
+
+  border-radius: 12px;
+}
