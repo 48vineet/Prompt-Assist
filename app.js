@@ -19,3 +19,33 @@ modal.addEventListener("click", (e) => {
     modal.classList.remove("show");
   }
 });
+
+// Render
+function renderPrompts() {
+  cardsContainer.innerHTML = "";
+  if (prompts.length === 0) {
+    emptyState.style.display = "block";
+    return;
+  }
+  emptyState.style.display = "none";
+  prompts.forEach((prompt) => {
+    const card = document.createElement("div");
+    card.classList.add("card");
+    card.innerHTML = ` <h3> ${prompt.title} </h3> <span> ${prompt.category} </span> <p> ${prompt.content} </p> `;
+    cardsContainer.appendChild(card);
+  });
+}
+// Create Prompt
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const prompt = {
+    title: titleInput.value,
+    category: categoryInput.value,
+    content: contentInput.value,
+  };
+  prompts.push(prompt);
+  renderPrompts();
+  form.reset();
+  modal.classList.remove("show");
+});
+renderPrompts();
