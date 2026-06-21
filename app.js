@@ -17,11 +17,9 @@ let prompts = JSON.parse(localStorage.getItem("prompts")) || [];
 let editingId = null;
 
 // LocalStorage
-
 function savePrompts() {
   localStorage.setItem("prompts", JSON.stringify(prompts));
 }
-
 // Modal
 openBtn.addEventListener("click", () => {
   modal.classList.add("show");
