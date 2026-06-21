@@ -1,83 +1,82 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Prompt Assist</title>
-    <link rel="stylesheet" href="style.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    />
-  </head>
 
-  <body>
-    <!-- header of the page -->
-    <header>
-      <div class="logo">
-        <i class="fa-solid fa-box"></i>
-        <h1>Prompt Assist</h1>
-      </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prompt Assist</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+</head>
 
-      <div class="header-right">
-        <div class="search-box">
-          <i class="fa-solid fa-magnifying-glass"></i>
-          <input type="text" placeholder="Search Prompt..." />
-        </div>
-
-        <button id="newPromptBtn">New Prompt</button>
-      </div>
-    </header>
-
-    <!-- main content -->
-    <main>
-      <section class="categories">
-        <button class="active">All</button>
-        <button>coding</button>
-        <button>Career</button>
-        <button>Writing</button>
-        <button>Research</button>
-        <button>Design</button>
-      </section>
-
-      <section class="cards" id="cardsContainer"></section>
-      <div id="emptyState" class="empty-state">
-        No prompts yet. Create your first prompt.
-      </div>
-    </main>
-
-    <!-- modal of prompt -->
-    <div class="modal-overlay" id="modalOverlay">
-      <div class="model">
-        <div class="model-header">
-          <h2>Add Prompt</h2>
-          <button id="closeModalBtn">x</button>
-        </div>
-
-        <form id="promptForm">
-          <label> Prompt Title </label>
-
-          <input id="promptTitle" type="text" placeholder="Enter title" />
-
-          <label> Category </label>
-
-          <select id="promptCategory">
-            <option>Coding</option>
-            <option>Career</option>
-            <option>Writing</option>
-            <option>Research</option>
-            <option>Design</option>
-          </select>
-
-          <label> Prompt </label>
-
-          <textarea id="promptContent" rows="6"></textarea>
-
-          <button type="submit">Save Prompt</button>
-        </form>
-      </div>
+<body>
+  <!-- header of the page -->
+  <header>
+    <div class="logo">
+      <i class="fa-solid fa-box"></i>
+      <h1>Prompt Assist</h1>
     </div>
 
-    <script src="app.js"></script>
-  </body>
+    <div class="header-right">
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input id="searchInput" type="text" placeholder="Search prompts...">
+      </div>
+
+      <button id="newPromptBtn">New Prompt</button>
+    </div>
+  </header>
+
+  <!-- main content -->
+  <main>
+    <section class="categories">
+      <button class="active">All</button>
+      <button>coding</button>
+      <button>Career</button>
+      <button>Writing</button>
+      <button>Research</button>
+      <button>Design</button>
+    </section>
+
+    <section class="cards" id="cardsContainer"></section>
+    <div id="emptyState" class="empty-state">
+      No prompts yet. Create your first prompt.
+    </div>
+  </main>
+
+  <!-- modal of prompt -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="model">
+      <div class="model-header">
+        <h2>Add Prompt</h2>
+        <button id="closeModalBtn">x</button>
+      </div>
+
+      <form id="promptForm">
+        <label> Prompt Title </label>
+
+        <input id="promptTitle" type="text" placeholder="Enter title" />
+
+        <label> Category </label>
+
+        <select id="promptCategory">
+          <option>Coding</option>
+          <option>Career</option>
+          <option>Writing</option>
+          <option>Research</option>
+          <option>Design</option>
+        </select>
+
+        <label> Prompt </label>
+
+        <textarea id="promptContent" rows="6"></textarea>
+
+        <button type="submit">Save Prompt</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+
 </html>
