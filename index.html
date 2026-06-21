@@ -9,6 +9,24 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 </head>
 
+        <button id="newPromptBtn">New Prompt</button>
+      </div>
+    </header>
+
+    <!-- main content -->
+    <main>
+      <section class="categories">
+        <button class="category-btn active" data-category="All">All</button>
+        <button class="category-btn" data-category="Coding">coding</button>
+        <button class="category-btn" data-category="Career">Career</button>
+        <button class="category-btn" data-category="Writing">Writing</button>
+        <button class="category-btn" data-category="Research">Research</button>
+        <button>class = "category-btn" data-category="Desgin"> Design</button>
+      </section>
+
+      <section class="cards" id="cardsContainer"></section>
+      <div id="emptyState" class="empty-state">
+        No prompts yet. Create your first prompt.
 <body>
   <!-- header of the page -->
   <header>
