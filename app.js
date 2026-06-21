@@ -7,6 +7,7 @@ const categoryInput = document.getElementById("promptCategory");
 const cotentInput = document.getElementById("promptContent");
 const emptyState = document.getElementById("emptyState");
 let prompts = [];
+let editingId = null;
 
 openBtn.addEventListener("click", () => {
   modal.classList.add("show");
@@ -34,11 +35,28 @@ function renderPrompts() {
     card.innerHTML = ` <h3> ${prompt.title} </h3> <span> ${prompt.category} </span> <p> ${prompt.content} </p> `;
     cardsContainer.appendChild(card);
   });
+  card
+    .querySelector(".edit-btn")
+    .addEventListener("click", () => editPrompt(prompt.id));
+
+  card
+    .querySelector(".delete-btn")
+    .addEventListener("click", () => deletePrompt(prompt.id));
+}
+
+//Delete
+function deletePrompt(id) {
+  prompts = prompts.filter(function (prompt) {
+    return prompt.id !== id;
+  });
+  savePrompts();
+  renderPrompts();
 }
 // Create Prompt
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   const prompt = {
+    id: Date.now(),
     title: titleInput.value,
     category: categoryInput.value,
     content: contentInput.value,
