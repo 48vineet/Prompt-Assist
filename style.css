@@ -191,3 +191,39 @@ form button {
 
   border-radius: 12px;
 }
+
+.card-actions {
+  margin-top: 15px;
+
+  display: flex;
+
+  gap: 10px;
+}
+
+.edit-btn {
+  border: none;
+
+  background: #2563eb;
+
+  color: white;
+
+  padding: 8px 12px;
+
+  border-radius: 6px;
+
+  cursor: pointer;
+}
+
+.delete-btn {
+  border: none;
+
+  background: #ef4444;
+
+  color: white;
+
+  padding: 8px 12px;
+
+  border-radius: 6px;
+
+  cursor: pointer;
+}

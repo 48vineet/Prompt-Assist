@@ -31,7 +31,7 @@ function renderPrompts() {
   prompts.forEach((prompt) => {
     const card = document.createElement("div");
     card.classList.add("card");
-    card.innerHTML = ` <h3> ${prompt.title} </h3> <span> ${prompt.category} </span> <p> ${prompt.content} </p> `;
+    card.innerHTML = ` <h3> ${prompt.title} </h3> <span> ${prompt.category} </span> <p> ${prompt.content} </p> <div class="card-actions"> <button class="edit-btn" data-id="${prompt.id}" > Edit </button> <button class="delete-btn" data-id="${prompt.id}" > Delete </button> </div> `;
     cardsContainer.appendChild(card);
   });
 }
@@ -43,9 +43,43 @@ form.addEventListener("submit", (e) => {
     category: categoryInput.value,
     content: contentInput.value,
   };
-  prompts.push(prompt);
+
+  if (editingId) {
+    const index = prompts.findIndex((p) => p.id === editingId);
+
+    prompts[index] = {
+      id: editingId,
+
+      title: titleInput.value,
+
+      category: categoryInput.value,
+
+      content: contentInput.value,
+    };
+
+    editingId = null;
+  } else {
+    prompts.unshift(prompt);
+  }
+
   renderPrompts();
   form.reset();
   modal.classList.remove("show");
 });
 renderPrompts();
+
+function editPrompt(id) {
+  const prompt = prompts.find((p) => p.id === id);
+
+  if (!prompt) return;
+
+  titleInput.value = prompt.title;
+
+  categoryInput.value = prompt.category;
+
+  contentInput.value = prompt.content;
+
+  editingId = id;
+
+  modal.classList.add("show");
+}
