@@ -9,17 +9,62 @@ const cardsContainer = document.getElementById("cardsContainer");
 const emptyState = document.getElementById("emptyState");
 const searchInput = document.getElementById("searchInput");
 const categoryButtons = document.querySelectorAll(".category-btn");
+const totalPrompts = document.getElementById("totalPrompts");
+const favoriteCount = document.getElementById("favoriteCount");
+const toast = document.getElementById("toast");
 
 let currentCategory = "All";
 let searchTerm = "";
-let prompts = JSON.parse(localStorage.getItem("prompts")) || [];
-
+let prompts = [];
 let editingId = null;
 
-// LocalStorage
+// Local Storage
 function savePrompts() {
   localStorage.setItem("prompts", JSON.stringify(prompts));
 }
+
+async function loadPrompts() {
+  const savedPrompts = localStorage.getItem("prompts");
+
+  if (savedPrompts) {
+    prompts = JSON.parse(savedPrompts);
+    renderPrompts();
+    return;
+  }
+
+  try {
+    const response = await fetch("./prompts.json");
+
+    prompts = await response.json();
+
+    savePrompts();
+
+    renderPrompts();
+  } catch (error) {
+    console.error("Failed to load prompts", error);
+  }
+}
+
+// Toast
+function showToast(message) {
+  toast.textContent = message;
+
+  toast.classList.add("show");
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2000);
+}
+
+// Stats
+function updateStats() {
+  totalPrompts.textContent = prompts.length;
+
+  favoriteCount.textContent = prompts.filter(
+    (prompt) => prompt.favorite,
+  ).length;
+}
+
 // Modal
 openBtn.addEventListener("click", () => {
   modal.classList.add("show");
@@ -27,11 +72,17 @@ openBtn.addEventListener("click", () => {
 
 closeBtn.addEventListener("click", () => {
   modal.classList.remove("show");
+  form.reset();
+  editingId = null;
 });
 
 modal.addEventListener("click", (e) => {
   if (e.target === modal) {
     modal.classList.remove("show");
+
+    form.reset();
+
+    editingId = null;
   }
 });
 
@@ -59,9 +110,10 @@ categoryButtons.forEach((btn) => {
 // Render
 function renderPrompts() {
   cardsContainer.innerHTML = "";
+
   let filteredPrompts = [...prompts];
 
-  // Search Filter
+  // Search
 
   if (searchTerm) {
     filteredPrompts = filteredPrompts.filter((prompt) => {
@@ -72,18 +124,22 @@ function renderPrompts() {
     });
   }
 
-  // Category Filter
+  // Category
 
-  if (currentCategory !== "All") {
-    filteredPrompts = filteredPrompts.filter((prompt) => {
-      return prompt.category === currentCategory;
-    });
+  if (currentCategory === "Favorites") {
+    filteredPrompts = filteredPrompts.filter((prompt) => prompt.favorite);
+  } else if (currentCategory !== "All") {
+    filteredPrompts = filteredPrompts.filter(
+      (prompt) => prompt.category === currentCategory,
+    );
   }
 
   // Empty State
 
   if (filteredPrompts.length === 0) {
     emptyState.style.display = "block";
+
+    updateStats();
 
     return;
   }
@@ -104,6 +160,14 @@ function renderPrompts() {
 
       <div class="card-actions">
 
+        <button class="favorite-btn">
+          ${prompt.favorite ? "★" : "☆"}
+        </button>
+
+        <button class="copy-btn">
+          Copy
+        </button>
+
         <button class="edit-btn">
           Edit
         </button>
@@ -115,6 +179,14 @@ function renderPrompts() {
       </div>
     `;
 
+    card.querySelector(".favorite-btn").addEventListener("click", () => {
+      toggleFavorite(prompt.id);
+    });
+
+    card.querySelector(".copy-btn").addEventListener("click", () => {
+      copyPrompt(prompt.id);
+    });
+
     card.querySelector(".edit-btn").addEventListener("click", () => {
       editPrompt(prompt.id);
     });
@@ -125,6 +197,36 @@ function renderPrompts() {
 
     cardsContainer.appendChild(card);
   });
+
+  updateStats();
+}
+
+// Favorite
+
+function toggleFavorite(id) {
+  const prompt = prompts.find((prompt) => prompt.id === id);
+
+  if (!prompt) return;
+
+  prompt.favorite = !prompt.favorite;
+
+  savePrompts();
+
+  renderPrompts();
+
+  showToast(prompt.favorite ? "Added to favorites" : "Removed from favorites");
+}
+
+// Copy
+
+function copyPrompt(id) {
+  const prompt = prompts.find((prompt) => prompt.id === id);
+
+  if (!prompt) return;
+
+  navigator.clipboard.writeText(prompt.content);
+
+  showToast("Prompt copied");
 }
 
 // Delete
@@ -135,6 +237,8 @@ function deletePrompt(id) {
   savePrompts();
 
   renderPrompts();
+
+  showToast("Prompt deleted");
 }
 
 // Edit
@@ -155,26 +259,16 @@ function editPrompt(id) {
   modal.classList.add("show");
 }
 
-// Create Prompt
+// Create / Update
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
-
-  const prompt = {
-    id: Date.now(),
-
-    title: titleInput.value,
-
-    category: categoryInput.value,
-
-    content: contentInput.value,
-  };
 
   if (editingId) {
     const index = prompts.findIndex((p) => p.id === editingId);
 
     prompts[index] = {
-      id: editingId,
+      ...prompts[index],
 
       title: titleInput.value,
 
@@ -183,14 +277,26 @@ form.addEventListener("submit", (e) => {
       content: contentInput.value,
     };
 
+    showToast("Prompt updated");
+
     editingId = null;
-
-    savePrompts();
   } else {
-    prompts.unshift(prompt);
+    prompts.unshift({
+      id: Date.now(),
 
-    savePrompts();
+      title: titleInput.value,
+
+      category: categoryInput.value,
+
+      content: contentInput.value,
+
+      favorite: false,
+    });
+
+    showToast("Prompt created");
   }
+
+  savePrompts();
 
   renderPrompts();
 
@@ -198,5 +304,4 @@ form.addEventListener("submit", (e) => {
 
   modal.classList.remove("show");
 });
-
-renderPrompts();
+loadPrompts();
