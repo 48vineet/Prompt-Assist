@@ -1,4 +1,4 @@
-[
+window.DEFAULT_PROMPTS = [
   {
     "id": 1,
     "title": "React Code Review",
@@ -175,3 +175,4 @@
     "favorite": false
   }
 ]
+;
