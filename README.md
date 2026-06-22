@@ -23,3 +23,11 @@ complete the day 3 remainig task and understood the flow of the entire code
 # Day 5
 
 Completes Main Things Like saving prompts creating updating deleteing prompts also search feature added
+
+# Day 6 
+
+Updateded the existing code added more features like edit delete
+
+# Day 7
+
+Project Completed ready to deploy 
