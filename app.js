@@ -23,11 +23,13 @@ var editingId = null;
 var expandContent = "";
 
 var ICONS = {
-  Coding:   "fa-solid fa-code",
-  Career:   "fa-solid fa-bullseye",
-  Writing:  "fa-solid fa-pen-nib",
+  Coding: "fa-solid fa-code",
+  Career: "fa-solid fa-bullseye",
+  Writing: "fa-solid fa-pen-nib",
+
+
   Research: "fa-solid fa-flask",
-  Design:   "fa-solid fa-palette"
+  Design: "fa-solid fa-palette"
 };
 
 // --- Storage ---
@@ -68,17 +70,17 @@ function esc(str) {
 function toast(msg) {
   toastEl.textContent = msg;
   toastBox.classList.add("show");
-  setTimeout(function() { toastBox.classList.remove("show"); }, 2200);
+  setTimeout(function () { toastBox.classList.remove("show"); }, 2200);
 }
 
 function updateStats() {
   totalEl.textContent = prompts.length;
-  favEl.textContent = prompts.filter(function(p) { return p.favorite; }).length;
+  favEl.textContent = prompts.filter(function (p) { return p.favorite; }).length;
 }
 
 // --- Modal ---
 
-document.getElementById("newPromptBtn").addEventListener("click", function() {
+document.getElementById("newPromptBtn").addEventListener("click", function () {
   modalTitle.textContent = "Add a Prompt";
   editingId = null;
   form.reset();
@@ -86,7 +88,7 @@ document.getElementById("newPromptBtn").addEventListener("click", function() {
 });
 
 document.getElementById("closeModalBtn").addEventListener("click", closeModal);
-modal.addEventListener("click", function(e) { if (e.target === modal) closeModal(); });
+modal.addEventListener("click", function (e) { if (e.target === modal) closeModal(); });
 
 function closeModal() {
   modal.classList.remove("show");
@@ -96,13 +98,13 @@ function closeModal() {
 
 // --- Expand ---
 
-document.getElementById("closeExpandBtn").addEventListener("click", function() {
+document.getElementById("closeExpandBtn").addEventListener("click", function () {
   expandOverlay.classList.remove("show");
 });
-expandOverlay.addEventListener("click", function(e) {
+expandOverlay.addEventListener("click", function (e) {
   if (e.target === expandOverlay) expandOverlay.classList.remove("show");
 });
-document.getElementById("expandCopyBtn").addEventListener("click", function() {
+document.getElementById("expandCopyBtn").addEventListener("click", function () {
   navigator.clipboard.writeText(expandContent);
   toast("Copied to clipboard");
 });
@@ -116,16 +118,16 @@ function openExpand(p) {
 
 // --- Search ---
 
-searchInput.addEventListener("input", function() {
+searchInput.addEventListener("input", function () {
   searchTerm = searchInput.value.toLowerCase();
   render();
 });
 
 // --- Category ---
 
-chips.forEach(function(btn) {
-  btn.addEventListener("click", function() {
-    chips.forEach(function(b) { b.classList.remove("active"); });
+chips.forEach(function (btn) {
+  btn.addEventListener("click", function () {
+    chips.forEach(function (b) { b.classList.remove("active"); });
     btn.classList.add("active");
     currentCategory = btn.dataset.category;
     render();
@@ -134,7 +136,7 @@ chips.forEach(function(btn) {
 
 // --- Keyboard ---
 
-document.addEventListener("keydown", function(e) {
+document.addEventListener("keydown", function (e) {
   if (e.key === "Escape") {
     if (expandOverlay.classList.contains("show")) expandOverlay.classList.remove("show");
     else if (modal.classList.contains("show")) closeModal();
@@ -148,16 +150,16 @@ function render() {
   var list = prompts.slice();
 
   if (searchTerm) {
-    list = list.filter(function(p) {
+    list = list.filter(function (p) {
       return p.title.toLowerCase().indexOf(searchTerm) !== -1 ||
-             p.content.toLowerCase().indexOf(searchTerm) !== -1;
+        p.content.toLowerCase().indexOf(searchTerm) !== -1;
     });
   }
 
   if (currentCategory === "Favorites") {
-    list = list.filter(function(p) { return p.favorite; });
+    list = list.filter(function (p) { return p.favorite; });
   } else if (currentCategory !== "All") {
-    list = list.filter(function(p) { return p.category === currentCategory; });
+    list = list.filter(function (p) { return p.category === currentCategory; });
   }
 
   if (!list.length) {
@@ -168,7 +170,7 @@ function render() {
 
   emptyState.style.display = "none";
 
-  list.forEach(function(p) {
+  list.forEach(function (p) {
     var card = document.createElement("div");
     card.className = "card";
     var icon = ICONS[p.category] || "fa-solid fa-file";
@@ -176,30 +178,30 @@ function render() {
 
     card.innerHTML =
       '<div class="card-top">' +
-        '<h3>' + esc(p.title) + '</h3>' +
-        '<button class="card-fav' + (p.favorite ? ' active' : '') + '">' +
-          '<i class="fa-' + (p.favorite ? 'solid' : 'regular') + ' fa-star"></i>' +
-        '</button>' +
+      '<h3>' + esc(p.title) + '</h3>' +
+      '<button class="card-fav' + (p.favorite ? ' active' : '') + '">' +
+      '<i class="fa-' + (p.favorite ? 'solid' : 'regular') + ' fa-star"></i>' +
+      '</button>' +
       '</div>' +
       '<span class="card-badge ' + p.category + '"><i class="' + icon + '"></i> ' + p.category + '</span>' +
       '<div class="card-content"><p>' + esc(p.content) + '</p></div>' +
       (long ? '<button class="card-toggle">Read more</button>' : '') +
       '<div class="card-actions">' +
-        '<button class="copy-btn"><i class="fa-regular fa-copy"></i> Copy</button>' +
-        '<button class="expand-btn"><i class="fa-solid fa-up-right-and-down-left-from-center"></i> View</button>' +
-        '<button class="edit-btn"><i class="fa-regular fa-pen-to-square"></i> Edit</button>' +
-        '<button class="delete-btn"><i class="fa-regular fa-trash-can"></i></button>' +
+      '<button class="copy-btn"><i class="fa-regular fa-copy"></i> Copy</button>' +
+      '<button class="expand-btn"><i class="fa-solid fa-up-right-and-down-left-from-center"></i> View</button>' +
+      '<button class="edit-btn"><i class="fa-regular fa-pen-to-square"></i> Edit</button>' +
+      '<button class="delete-btn"><i class="fa-regular fa-trash-can"></i></button>' +
       '</div>';
 
-    card.querySelector(".card-fav").onclick = function() { toggleFav(p.id); };
-    card.querySelector(".copy-btn").onclick = function() { copy(p.id); };
-    card.querySelector(".expand-btn").onclick = function() { openExpand(p); };
-    card.querySelector(".edit-btn").onclick = function() { edit(p.id); };
-    card.querySelector(".delete-btn").onclick = function() { del(p.id); };
+    card.querySelector(".card-fav").onclick = function () { toggleFav(p.id); };
+    card.querySelector(".copy-btn").onclick = function () { copy(p.id); };
+    card.querySelector(".expand-btn").onclick = function () { openExpand(p); };
+    card.querySelector(".edit-btn").onclick = function () { edit(p.id); };
+    card.querySelector(".delete-btn").onclick = function () { del(p.id); };
 
     if (long) {
       var toggle = card.querySelector(".card-toggle");
-      toggle.onclick = function() {
+      toggle.onclick = function () {
         var content = card.querySelector(".card-content");
         content.classList.toggle("expanded");
         toggle.textContent = content.classList.contains("expanded") ? "Show less" : "Read more";
@@ -215,7 +217,7 @@ function render() {
 // --- CRUD ---
 
 function toggleFav(id) {
-  var p = prompts.find(function(x) { return x.id === id; });
+  var p = prompts.find(function (x) { return x.id === id; });
   if (!p) return;
   p.favorite = !p.favorite;
   save();
@@ -224,21 +226,21 @@ function toggleFav(id) {
 }
 
 function copy(id) {
-  var p = prompts.find(function(x) { return x.id === id; });
+  var p = prompts.find(function (x) { return x.id === id; });
   if (!p) return;
   navigator.clipboard.writeText(p.content);
   toast("Prompt copied");
 }
 
 function del(id) {
-  prompts = prompts.filter(function(x) { return x.id !== id; });
+  prompts = prompts.filter(function (x) { return x.id !== id; });
   save();
   render();
   toast("Prompt deleted");
 }
 
 function edit(id) {
-  var p = prompts.find(function(x) { return x.id === id; });
+  var p = prompts.find(function (x) { return x.id === id; });
   if (!p) return;
   titleInput.value = p.title;
   categoryInput.value = p.category;
@@ -248,11 +250,11 @@ function edit(id) {
   modal.classList.add("show");
 }
 
-form.addEventListener("submit", function(e) {
+form.addEventListener("submit", function (e) {
   e.preventDefault();
 
   if (editingId) {
-    var idx = prompts.findIndex(function(x) { return x.id === editingId; });
+    var idx = prompts.findIndex(function (x) { return x.id === editingId; });
     prompts[idx].title = titleInput.value;
     prompts[idx].category = categoryInput.value;
     prompts[idx].content = contentInput.value;
